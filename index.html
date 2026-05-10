@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Code Explainer</title>
+    <title>ZAD's AI Code Explainer</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -16,7 +16,7 @@
 <body class="bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-200 min-h-screen transition-colors duration-300 p-4 font-sans flex flex-col items-center">
 
     <div class="w-full max-w-3xl flex justify-between items-center py-6">
-        <h1 class="text-3xl font-bold text-indigo-600 dark:text-indigo-400"><i class="fa-solid fa-code border-indigo-600 mr-2"></i>AI Code Explainer</h1>
+        <h1 class="text-3xl font-bold text-indigo-600 dark:text-indigo-400"><i class="fa-solid fa-code border-indigo-600 mr-2"></i>ZAD's AI Code Explainer</h1>
         <button id="themeToggle" class="p-2 rounded-full bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 transition">
             <i id="themeIcon" class="fa-solid fa-moon text-gray-800 dark:text-yellow-400"></i>
         </button>
@@ -54,7 +54,103 @@
             </div>
             <p class="mt-4 text-indigo-600 dark:text-indigo-400 font-medium animate-pulse">Analyzing logic and syntax...</p>
         </div>
+<!DOCTYPE html>
+<html lang="en" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZAD's AI Code Explainer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: { extend: {} }
+        }
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-200 min-h-screen transition-colors duration-300 font-sans flex flex-col items-center">
 
+    <div id="sidebar" class="fixed inset-y-0 left-0 w-80 bg-white dark:bg-gray-800 shadow-2xl transform -translate-x-full transition-transform duration-300 z-50 flex flex-col border-r border-gray-200 dark:border-gray-700">
+        <div class="p-5 flex justify-between items-center border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900/50">
+            <h2 class="font-bold text-lg text-indigo-600 dark:text-indigo-400"><i class="fa-solid fa-clock-rotate-left mr-2"></i>Past Explanations</h2>
+            <button id="closeSidebarBtn" class="text-gray-500 hover:text-red-500 transition-colors">
+                <i class="fa-solid fa-xmark fa-xl"></i>
+            </button>
+        </div>
+        <div class="flex-1 overflow-y-auto p-4">
+            <ul id="historyList" class="space-y-3 text-sm">
+                </ul>
+        </div>
+    </div>
+
+    <div id="overlay" class="fixed inset-0 bg-black bg-opacity-50 hidden z-40 transition-opacity"></div>
+
+    <div class="w-full max-w-4xl flex justify-between items-center py-6 px-4">
+        <div class="flex items-center gap-4">
+            <button id="menuBtn" class="p-2 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition text-gray-600 dark:text-gray-300">
+                <i class="fa-solid fa-bars fa-lg"></i>
+            </button>
+            <h1 class="text-3xl font-bold text-indigo-600 dark:text-indigo-400 hidden sm:block"><i class="fa-solid fa-code mr-2"></i>ZAD's AI Code Explainer</h1>
+        </div>
+        <button id="themeToggle" class="p-2 rounded-full bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 transition">
+            <i id="themeIcon" class="fa-solid fa-moon text-gray-800 dark:text-yellow-400"></i>
+        </button>
+    </div>
+
+    <main class="w-full max-w-4xl bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 md:p-8 transition-colors duration-300 mb-12 border border-gray-200 dark:border-gray-700 mx-4">
+        
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
+            <div class="w-full sm:w-auto flex-grow">
+                <label for="explainStyle" class="block text-sm font-medium mb-1 text-gray-600 dark:text-gray-400">Explanation Style:</label>
+                <select id="explainStyle" class="w-full sm:w-56 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white transition-colors">
+                    <option value="simple">Simple (Beginner)</option>
+                    <option value="detailed">Detailed (Step-by-Step)</option>
+                    <option value="formal">Formal (Academic)</option>
+                </select>
+            </div>
+            <button id="clearBtn" class="w-full sm:w-auto px-4 py-2 bg-red-50 text-red-600 hover:bg-red-100 dark:bg-red-900/20 dark:text-red-400 dark:hover:bg-red-900/40 rounded-lg font-medium transition text-sm flex items-center justify-center gap-2 border border-red-200 dark:border-red-800/50">
+                <i class="fa-solid fa-trash-can"></i> Clear All
+            </button>
+        </div>
+
+        <div class="mb-6">
+            <label for="codeInput" class="block text-sm font-medium mb-2 text-gray-600 dark:text-gray-400">Paste your code snippet here:</label>
+            <textarea id="codeInput" rows="6" class="font-mono w-full p-4 bg-gray-50 dark:bg-gray-900 border border-gray-300 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none resize-y transition-colors text-sm" placeholder="e.g., function add(a, b) { return a + b; }"></textarea>
+        </div>
+
+        <button id="generateBtn" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3.5 px-4 rounded-lg transition duration-200 flex justify-center items-center gap-2 shadow-md hover:shadow-lg text-lg">
+            <i class="fa-solid fa-wand-magic-sparkles"></i> Explain Code
+        </button>
+
+        <div id="loadingState" class="hidden mt-8 flex flex-col items-center justify-center py-6">
+            <div class="relative w-12 h-12">
+                <div class="absolute inset-0 rounded-full border-4 border-gray-200 dark:border-gray-700"></div>
+                <div class="absolute inset-0 rounded-full border-4 border-indigo-600 border-t-transparent animate-spin"></div>
+            </div>
+            <p class="mt-4 text-indigo-600 dark:text-indigo-400 font-medium animate-pulse">Analyzing logic and structure...</p>
+        </div>
+
+        <div id="errorArea" class="hidden mt-6 p-4 bg-red-50 text-red-700 dark:bg-red-900/20 dark:text-red-400 rounded-lg border border-red-200 dark:border-red-800 text-sm font-medium flex items-center gap-2">
+            <i class="fa-solid fa-circle-exclamation"></i> <span id="errorText"></span>
+        </div>
+
+        <div id="resultContainer" class="hidden mt-8 pt-6 border-t border-gray-200 dark:border-gray-700">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-bold text-gray-800 dark:text-gray-200">AI Explanation:</h3>
+                <button id="copyBtn" class="text-sm px-4 py-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-200 rounded-lg transition flex items-center gap-2 font-medium border border-gray-200 dark:border-gray-600">
+                    <i class="fa-regular fa-copy"></i> Copy
+                </button>
+            </div>
+            
+            <div id="resultArea" class="p-6 md:p-8 bg-indigo-50/50 dark:bg-indigo-900/10 text-gray-800 dark:text-gray-200 rounded-xl border border-indigo-100 dark:border-indigo-800/30 text-lg md:text-xl leading-relaxed shadow-inner font-sans">
+                </div>
+        </div>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
         <div id="errorArea" class="hidden mt-6 p-4 bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400 rounded-lg border border-red-200 dark:border-red-800 text-sm font-medium flex items-center gap-2">
             <i class="fa-solid fa-circle-exclamation"></i> <span id="errorText"></span>
         </div>
