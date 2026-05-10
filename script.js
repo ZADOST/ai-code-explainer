@@ -65,7 +65,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Copy Button Logic (Strip HTML to only copy raw text for the user's clipboard)
     copyBtn.addEventListener('click', () => {
-        const textToCopy = resultArea.innerText; // Grabs the clean rendered text
+        const textToCopy = resultArea.innerText; 
         navigator.clipboard.writeText(textToCopy).then(() => {
             const originalHTML = copyBtn.innerHTML;
             copyBtn.innerHTML = '<i class="fa-solid fa-check text-green-500"></i> Copied!';
@@ -79,7 +79,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function formatMarkdown(text) {
         if (!text) return '';
         
-        let html = text.replace(/</g, '&lt;').replace(/>/g, '&gt;'); // Basic XSS protection
+        let html = text.replace(/</g, '&lt;').replace(/>/g, '&gt;'); 
         
         // Code Blocks
         html = html.replace(/```(\w*)\n([\s\S]*?)```/g, '<pre class="bg-gray-800 text-gray-100 p-4 rounded-lg my-6 overflow-x-auto text-base font-mono shadow-md border border-gray-700">$2</pre>');
@@ -180,7 +180,7 @@ document.addEventListener('DOMContentLoaded', () => {
             timestamp: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) + ' - ' + new Date().toLocaleDateString()
         });
         
-        if (history.length > 15) history.pop(); // Keep up to 15 items in sidebar
+        if (history.length > 15) history.pop(); 
         localStorage.setItem('codeHistory', JSON.stringify(history));
         loadHistory();
     }
@@ -196,25 +196,41 @@ document.addEventListener('DOMContentLoaded', () => {
         
         history.forEach(item => {
             const li = document.createElement('li');
-            li.className = 'p-3 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-700 cursor-pointer transition-colors shadow-sm';
+            li.className = 'p-3 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-700 cursor-pointer transition-colors shadow-sm relative group flex justify-between items-center';
+            
             li.innerHTML = `
-                <div class="font-mono text-xs text-indigo-600 dark:text-indigo-400 truncate mb-1 border-b border-gray-100 dark:border-gray-700 pb-1">${item.preview}</div>
-                <div class="text-xs text-gray-500 dark:text-gray-400 flex justify-between">
-                    <span><i class="fa-solid fa-clock mr-1"></i>${item.timestamp}</span>
+                <div class="flex-grow pr-8 overflow-hidden">
+                    <div class="font-mono text-xs text-indigo-600 dark:text-indigo-400 truncate mb-1 border-b border-gray-100 dark:border-gray-700 pb-1">${item.preview}</div>
+                    <div class="text-xs text-gray-500 dark:text-gray-400 flex justify-between">
+                        <span><i class="fa-solid fa-clock mr-1"></i>${item.timestamp}</span>
+                    </div>
                 </div>
             `;
             
+            // Create Delete Button
+            const deleteBtn = document.createElement('button');
+            deleteBtn.className = 'absolute right-2 text-gray-400 hover:text-red-500 p-2 opacity-0 group-hover:opacity-100 transition-opacity rounded bg-white dark:bg-gray-800 shadow-sm border border-transparent hover:border-red-200 dark:hover:border-red-800';
+            deleteBtn.innerHTML = '<i class="fa-solid fa-trash-can"></i>';
+            
+            deleteBtn.addEventListener('click', (e) => {
+                e.stopPropagation(); // Prevents restoring the code when deleting
+                let currentHistory = JSON.parse(localStorage.getItem('codeHistory')) || [];
+                currentHistory = currentHistory.filter(h => h.id !== item.id);
+                localStorage.setItem('codeHistory', JSON.stringify(currentHistory));
+                loadHistory(); // Re-render
+            });
+
             // Make history item clickable!
             li.addEventListener('click', () => {
                 codeInput.value = item.code;
                 resultArea.innerHTML = formatMarkdown(item.explanation);
                 resultContainer.classList.remove('hidden');
                 errorArea.classList.add('hidden');
-                closeSidebar(); // Automatically close drawer to show result
-                // Scroll to result smoothly
+                closeSidebar(); 
                 resultContainer.scrollIntoView({ behavior: 'smooth' });
             });
             
+            li.appendChild(deleteBtn);
             historyList.appendChild(li);
         });
     }
